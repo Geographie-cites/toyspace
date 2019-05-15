@@ -9,7 +9,12 @@ Description: More about what it does (maybe more than one line)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 3.3.0)
+Imports: 
+    dplyr,
+    magrittr
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+RoxygenNote: 6.1.1
