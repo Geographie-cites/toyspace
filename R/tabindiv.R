@@ -1,15 +1,19 @@
-#' \name{tabindiv}
-#' \docType{data}
-#' \alias{tabindiv}
-#' \title{dataframe of individuals}
-#' \description{
-#'   dataframe of individuals and their daily travel to work inside the Paris urban region(stored as df)
+#' @title tabindiv
+#' @name tabindiv
+#' @description  dataframe of individuals and their daily travel to work inside the Paris urban region(stored as df)
+#' Fields: \cr
+#' \itemize{
+#' \item{ORI}
+#' \item{DES}
+#' \item{SCP}
+#' \item{MODE}
+#' \item{WGT}
 #' }
-#' \usage{tabindiv}
-#' \format{A dataframe containing 1 069 971 rows}
-#' \source{INSEE 2014}
-#' \references{
-#'  INSEE 2014
-#' }
-#' \keyword{datasets}
-
+#' @references
+#' \url{https://www.insee.fr/fr/statistiques/2862065}
+#' @docType data
+#' @examples
+#' ## tabindiv
+#' data(tabindiv)
+#' str(tabindiv)
+NULL

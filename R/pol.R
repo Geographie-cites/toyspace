@@ -1,16 +1,16 @@
-
-#' \name{pol}
-#' \docType{data}
-#' \alias{pol}
-#' \title{cities polygon}
-#' \description{
-#'   Polygon data of cities in Paris region (stored as sf)
+#' @title polygons
+#' @name pol
+#' @description  Polygon data of cities in Paris region (stored as sf)
+#' Fields: \cr
+#' \itemize{
+#' \item{name}
+#' \item{idpol}
 #' }
-#' \usage{pol}
-#' \format{A vector containing 1299 observations.}
-#' \source{GEOFLA IGN 2014}
-#' \references{
-#'   IGN
-#' }
-#' \keyword{datasets}
-
+#' @references
+#' \url{http://data.iledefrance.fr}
+#' @docType data
+#' @examples
+#' ## pol
+#' data(pol)
+#' str(pol)
+NULL

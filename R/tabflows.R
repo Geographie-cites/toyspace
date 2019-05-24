@@ -1,4 +1,3 @@
-
 #' @title Commuters
 #' @name tabflows
 #' @description Data on commuters between Urban Areas in Paris region in 2014.
@@ -17,5 +16,5 @@
 #' @examples
 #' ## tabflows
 #' data(tabflows)
-
+NULL
 
