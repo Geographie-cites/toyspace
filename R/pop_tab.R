@@ -10,22 +10,28 @@
 #' @return A data.frame of totals origins, destinations and internals flows for each city
 #'
 #' @examples
-#' 1 + 1
+#' data(tabflows)
+#'
+#' popTab <- pop_tab(tabflows = tabflows, idori = "ORI", iddes = "DES", idflow = "FLOW")
+#'
+#' popTab[10:10,]
 #'
 #' @export
-#' @importFrom dplyr summarise filter group_by left_join
-#' @importFrom magrittr %>%
+#' @importFrom stats aggregate
 
 pop_tab <- function(tabflows, idori, iddes, idflow){
-  tabflows$ORI <- tabflows[[idori]]
-  tabflows$DES <- tabflows[[iddes]]
-  tabflows$FLOW <- tabflows[[idflow]]
-  tabflowOriOri <- tabflows %>% filter(ORI == DES) %>% group_by(ORI,DES) %>% summarise(TOTINTRA = sum(FLOW))
-  tabflowOri <-  tabflows %>% filter(ORI != DES) %>% group_by(ORI) %>% summarise(TOTORI = sum(FLOW))
-  tabflowDes <-  tabflows %>% filter(ORI != DES) %>% group_by(DES) %>% summarise(TOTDES = sum(FLOW))
-  poptab <- left_join(x = tabflowOriOri, y = tabflowOri, by = "ORI")
-  poptab <- left_join(x = poptab, y = tabflowDes, by = "DES")
-  poptab$DES <- NULL
+  tabflowIntra <- tabflows[tabflows[idori] == tabflows[iddes], ]
+  tabflowIntra <- aggregate(x = tabflowIntra[[idflow]], by = list(tabflowIntra[[idori]],tabflowIntra[[iddes]]), FUN = sum)
+  colnames(tabflowIntra) <- c("ORI", "DES","TOTINTRA")
+  tabflowOri <- tabflows[tabflows[idori] != tabflows[iddes], ]
+  tabflowOri <- aggregate(x = tabflowOri[[idflow]], by = list(tabflowOri[[idori]]), FUN = sum)
+  colnames(tabflowOri) <- c("ORI","TOTORI")
+  tabflowDes <- tabflows[tabflows[idori] != tabflows[iddes], ]
+  tabflowDes <- aggregate(x = tabflowDes[[idflow]], by = list(tabflowDes[[iddes]]), FUN = sum)
+  colnames(tabflowDes) <- c("DES","TOTDES")
+  poptab <- merge(x = tabflowIntra, y = tabflowOri, by.x = idori, by.y =idori)
+  poptab <- merge(x = poptab, y = tabflowDes, by.x = idori, by.y =iddes)
+  poptab[[iddes]] <- NULL
   colnames(poptab) <- c("idflow", "TOTINTRA","TOTORI", "TOTDES")
   return(poptab)
 }

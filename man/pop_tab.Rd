@@ -23,6 +23,10 @@ This function allows you to store the totals of origins, destinations and intren
 from a long format matrix of flows.
 }
 \examples{
-1 + 1
+data(tabflows)
+
+popTab <- pop_tab(tabflows = tabflows, idori = "ORI", iddes = "DES", idflow = "FLOW")
+
+popTab[10:10,]
 
 }

@@ -11,8 +11,13 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.3.0)
 Imports: 
-    dplyr,
-    magrittr
+    stats,
+    sf,
+    rgdal,
+    reshape2,
+    flows,
+    cartography,
+    dodgr
 Suggests: 
     knitr,
     rmarkdown
