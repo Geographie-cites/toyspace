@@ -6,6 +6,7 @@
 #' @param idori A character string giving the origin field name in tabflows
 #' @param iddes A character string giving the destination field name in tabflows
 #' @param idflow A character string giving the flow field name in tabflows
+#' @param iddist A character string giving the distance field name in tabflows
 #' @param weight A character string, chosen between, "destination", "origin" or "internal" to weigths the flows
 #' @param threspct A threshold (see 'Details')
 #' @param pol An sf object of the cities
@@ -24,9 +25,10 @@
 #' iddes <- "DES"
 #' idflow <- "FLOW"
 #' weight <- "destination"
-#' threspct <- 3
+#' threspct <- 1
 #' data(pol)
 #' idpol <- "idpol"
+#' iddist <- "DIST"
 #'
 #' domflow <- nystuen_dacey(
 #' tabflows,
@@ -36,7 +38,8 @@
 #' weight,
 #' threspct,
 #' pol,
-#' idpol)
+#' idpol,
+#' iddist)
 #'
 #' domflow[1]
 #' domflow[2]
@@ -48,7 +51,7 @@
 #' @importFrom sf st_centroid st_geometry
 #' @importFrom rgdal project
 
-nystuen_dacey <- function(tabflows, idori, iddes, idflow, weight, threspct, pol, idpol){
+nystuen_dacey <- function(tabflows, idori, iddes, idflow, weight, threspct, pol, idpol, iddist){
   # weight choices between "destination", "origin", "internal"
   mat <- prepflows(tabflows, idori, iddes, idflow)
   if(weight=="destination"){
@@ -72,7 +75,7 @@ nystuen_dacey <- function(tabflows, idori, iddes, idflow, weight, threspct, pol,
   xy <- do.call(rbind, st_geometry(shapesfCent))
   shapesfCent$lon <- xy[,1]
   shapesfCent$lat <- xy[,2]
-  popTab <- pop_tab(tabflows, idori, iddes, idflow)
+  popTab <- pop_tab(tabflows, idori, iddes, idflow, iddist)
   pointFlow <- merge(x = shapesfCent, y = popTab, by.x = idpol, by.y = "idflow")
   tabflowOri <- aggregate(x = tabflows[[idflow]], by = list(tabflows[[idori]]), FUN = sum)
   colnames(tabflowOri) <- c("ORI","TOTORI")
@@ -85,5 +88,6 @@ nystuen_dacey <- function(tabflows, idori, iddes, idflow, weight, threspct, pol,
   pointFlow[pointFlow[[idpol]] %in% fdom1$j & pointFlow[[idpol]] %in% fdom1$i, "status"] <- 2
   pointFlow[!pointFlow[[idpol]] %in% fdom1$j & pointFlow[[idpol]] %in% fdom1$i, "status"] <- 3
   pointFlow <- pointFlow[pointFlow$status != "", ]
+  pointFlow$status <- as.numeric(pointFlow$status)
   return(list( PTS = pointFlow, FLOWS = spLinks))
 }

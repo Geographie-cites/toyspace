@@ -20,14 +20,25 @@
 #' matDist[1:10,]
 #'
 #' @export
-#' @importFrom dodgr weight_streetnet dodgr_dists
+#' @importFrom dodgr weight_streetnet dodgr_dists dodgr_to_igraph
 #' @importFrom sf st_centroid
+#' @importFrom igraph delete.vertices degree
 
 routing_machine <- function(road, pol,idpol){
-  #Set weight to the same
+
   road$wgt <- 0
   #Création du graph réseau
   roadgraph <- weight_streetnet(x = road, wt_profile = 0, type_col = "wgt")
+
+  roadIgraph <- dodgr_to_igraph(roadgraph)
+  roadIgraph <- induced_subgraph(
+    roadIgraph, V(roadIgraph)[components(roadIgraph)$membership == which.max(components(roadIgraph)$csize)]
+  )
+  roadgraph <- igraph_to_dodgr(roadIgraph)
+  roadgraph$n_from <- NULL
+  roadgraph$n_to <- NULL
+  roadgraph <- roadgraph[,c(1,2,7,8,3,9,10,4,5,6)]
+  names(roadgraph) <- c("edge_id","from_id","from_lon","from_lat","to_id","to_lon","to_lat","d","d_weighted","component")
   #Chopper les centroïdes
   shapesfCent <- st_centroid(pol)
   xy <- do.call(rbind, st_geometry(shapesfCent))
@@ -40,5 +51,4 @@ routing_machine <- function(road, pol,idpol){
   colnames(matDist) <- shapesfCent[[idpol]]
   return(matDist)
 }
-
 

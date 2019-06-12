@@ -4,7 +4,7 @@
 \alias{mob_indic}
 \title{Shape mobility indicators}
 \usage{
-mob_indic(tabflows, idori, iddes, idflow, pol, idpol)
+mob_indic(tabflows, idori, iddes, idflow, iddist, pol, idpol)
 }
 \arguments{
 \item{tabflows}{A data.frame of flows between origins and destinations (long format matrix containing, at least, 3 column : origins, destinations, flows)}
@@ -14,6 +14,8 @@ mob_indic(tabflows, idori, iddes, idflow, pol, idpol)
 \item{iddes}{A character string giving the destination field name in tabflows}
 
 \item{idflow}{A character string giving the flow field name in tabflows}
+
+\item{iddist}{A character string giving the distance field name in tabflows}
 
 \item{pol}{An sf object of the cities}
 
@@ -32,6 +34,9 @@ There are 4 mobility indicators :
       It expresses the density of displacements in a city.
       - Relative Balance (RelBal) : it refers to the ratio between inflows less outflows on one hand and the population of the city on the other.
       It expresses the degree of polarization of a city, thus its attractiveness in terms of employment.
+      - Percentage at Origin (perOri) : it refers to the percentage of total worker living in the city
+      - Percentage at Destination (perDes) : it refers to the percentage of total worker working in the city
+      - Percentage of InternalFlow (perIntra) : it refers to the percentage of total worker living and working in the city
 }
 \description{
 This function allows you to create an sf object containing mobility indicators in each polygons using a data.frame of flows
@@ -42,10 +47,11 @@ data(tabflows)
 idori <- "ORI"
 iddes <- "DES"
 idflow <- "FLOW"
+iddist <- "DIST"
 data(pol)
 idpol <- "idpol"
 
-polflow <- mob_indic(tabflows, idori, iddes, idflow, pol, idpol)
+polflow <- mob_indic(tabflows, idori, iddes, idflow, iddist, pol, idpol)
 
 polflow[1:10,]
 

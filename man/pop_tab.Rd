@@ -4,7 +4,7 @@
 \alias{pop_tab}
 \title{Total flows of a DF}
 \usage{
-pop_tab(tabflows, idori, iddes, idflow)
+pop_tab(tabflows, idori, iddes, idflow, iddist)
 }
 \arguments{
 \item{tabflows}{A data.frame of flows between origins and destinations (long format matrix containing, at least, origins, destinations, flows)}
@@ -14,9 +14,11 @@ pop_tab(tabflows, idori, iddes, idflow)
 \item{iddes}{identifiant des}
 
 \item{idflow}{identifiant flux}
+
+\item{iddist}{identifiant dist}
 }
 \value{
-A data.frame of totals origins, destinations and internals flows for each city
+A data.frame of totals origins, destinations, internals flows and mean of distance for origins and destination of each city
 }
 \description{
 This function allows you to store the totals of origins, destinations and intrenals flows for each city in a dataframe,
@@ -25,7 +27,8 @@ from a long format matrix of flows.
 \examples{
 data(tabflows)
 
-popTab <- pop_tab(tabflows = tabflows, idori = "ORI", iddes = "DES", idflow = "FLOW")
+popTab <- pop_tab(tabflows = tabflows, idori = "ORI",
+iddes = "DES", idflow = "FLOW", iddist = "DIST")
 
 popTab[10:10,]
 
