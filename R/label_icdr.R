@@ -35,8 +35,8 @@ label_icdr <- function(tabflows, idori, iddes, idflow, pol, idpol){
   links <- merge(links, tabflows[, c("KEY", "ICDR")], by.x = "KEY", by.y = "KEY")
   links$KEY <- NULL
   polHS <- pol
-  polHS$status <- ifelse(polHS[[idpol]] %in% hotspotLabor, "labor", ifelse(polHS[[idpol]] %in% hotspotResid, "resid", "none"))
-  polHS <- polHS[polHS$status == "labor"| polHS$status == "resid",]
+  polHS$status <- ifelse(polHS[[idpol]] %in% hotspotLabor, "Hotspot de travail", ifelse(polHS[[idpol]] %in% hotspotResid, "Hotspot résidentiel", "none"))
+  polHS <- polHS[polHS$status == "Hotspot de travail"| polHS$status == "Hotspot résidentiel",]
   pointHS <- st_centroid(polHS)
   xy <- do.call(rbind, st_geometry(pointHS))
   pointHS$lon <- xy[,1]
