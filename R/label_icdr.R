@@ -13,6 +13,8 @@
 #' @export
 #' @importFrom flows prepflows
 #' @importFrom cartography getLinkLayer
+#' @importFrom sf st_centroid st_geometry
+
 
 label_icdr <- function(tabflows, idori, iddes, idflow, pol, idpol){
   matOD <- prepflows(mat = tabflows, i = idori, j = iddes, fij = idflow)
@@ -32,7 +34,14 @@ label_icdr <- function(tabflows, idori, iddes, idflow, pol, idpol){
   links$KEY <- paste(links[[idori]], links[[iddes]], sep = "_")
   links <- merge(links, tabflows[, c("KEY", "ICDR")], by.x = "KEY", by.y = "KEY")
   links$KEY <- NULL
-  return(links)
+  polHS <- pol
+  polHS$status <- ifelse(polHS[[idpol]] %in% hotspotLabor, "labor", ifelse(polHS[[idpol]] %in% hotspotResid, "resid", "none"))
+  polHS <- polHS[polHS$status == "labor"| polHS$status == "resid",]
+  polHS <- st_centroid(polHS)
+  xy <- do.call(rbind, st_geometry(polHS))
+  polHS$lon <- xy[,1]
+  polHS$lat <- xy[,2]
+  return(list( HS = pointFlow, LINKS = links))
 }
 
 

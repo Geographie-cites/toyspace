@@ -49,7 +49,6 @@
 #' @importFrom reshape2 melt
 #' @importFrom flows prepflows domflows firstflows
 #' @importFrom sf st_centroid st_geometry
-#' @importFrom rgdal project
 
 nystuen_dacey <- function(tabflows, idori, iddes, idflow, weight, threspct, pol, idpol, iddist){
   # weight choices between "destination", "origin", "internal"
