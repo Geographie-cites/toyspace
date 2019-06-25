@@ -6,6 +6,7 @@
 #' @param tabindiv A data.frame of individuals between origins and destinations (long format matrix containing, at least, origins, destinations for each individuals)
 #' @param idori A character string giving the origin field name in tabindiv
 #' @param iddes A character string giving the destination field name in tabindiv
+#' @param idmode A character string giving the transport mode field name in tabindiv
 #' @param varwgt Default to NULL ; a character string giving the weight field name in tabindiv
 #' @param variable Default to NULL ; a character string giving the name of the field in tabindiv in wich selected label will be filtered
 #' @param label Default to NULL ; a character string giving the value of the variable to be filtered (or keeped)
@@ -17,15 +18,17 @@
 #' data(tabindiv)
 #' idori <- "ORI"
 #' iddes <- "DES"
+#' idmode <- "MODE"
+#' idcsp <-"SCP"
 #'
-#' tabflows <- create_tabflows(tabindiv, idori, iddes)
+#' tabflows <- create_tabflows(tabindiv, idori, iddes, idmode, idcsp)
 #'
 #' tabflows[1:10,]
 #'
 #' # we will now weight individuals with the column "WGT"
 #' varwgt <- "WGT"
 #'
-#' tabflows <- create_tabflows(tabindiv, idori, iddes, varwgt)
+#' tabflows <- create_tabflows(tabindiv, idori, iddes, idmode, idcsp, varwgt)
 #'
 #' tabflows[1:10,]
 #'
@@ -33,7 +36,7 @@
 #' variable <- "SCP"
 #' label <- "3"
 #'
-#' tabflowsW <- create_tabflows(tabindiv, idori, iddes, varwgt, variable, label)
+#' tabflowsW <- create_tabflows(tabindiv, idori, iddes, idmode, idcsp, varwgt, variable, label)
 #'
 #' tabflowsW[1:10,]
 #'
@@ -41,10 +44,12 @@
 #'
 
 
-create_tabflows <- function(tabindiv, idori, iddes, varwgt = NULL, variable = NULL, label = NULL){
+create_tabflows <- function(tabindiv, idori, iddes, idmode, idcsp, varwgt = NULL, variable = NULL, label = NULL){
   # rename variables
   tabindiv$ORI <- tabindiv[[idori]]
   tabindiv$DES <- tabindiv[[iddes]]
+  tabindiv$MODE <- tabindiv[[idmode]]
+  tabindiv$CSP <- tabindiv[[idcsp]]
   # get weights
   if(!is.null(varwgt)){
     tabindiv$WGT <- tabindiv[[varwgt]]
@@ -56,8 +61,8 @@ create_tabflows <- function(tabindiv, idori, iddes, varwgt = NULL, variable = NU
     tabindiv <- tabindiv[tabindiv[, variable] == label, ]
   }
   # group by origin and destination
-  tabFlows <- aggregate(x = tabindiv$WGT, by = list(tabindiv$ORI, tabindiv$DES), FUN = sum)
-  colnames(tabFlows) <- c("ORI", "DES", "FLOW")
+  tabFlows <- aggregate(x = tabindiv$WGT, by = list(tabindiv$ORI, tabindiv$DES, tabindiv$MODE, tabindiv$CSP), FUN = sum)
+  colnames(tabFlows) <- c("ORI", "DES", "MODE", "CSP","FLOW")
 
   return(tabFlows)
 }

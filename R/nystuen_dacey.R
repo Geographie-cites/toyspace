@@ -7,7 +7,7 @@
 #' @param iddes A character string giving the destination field name in tabflows
 #' @param idflow A character string giving the flow field name in tabflows
 #' @param iddist A character string giving the distance field name in tabflows
-#' @param weight A character string, chosen between, "destination", "origin" or "internal" to weigths the flows
+#' @param weight A character string, chosen between, "destination", "origin" or "sum" to weigths the flows
 #' @param threspct A threshold (see 'Details')
 #' @param pol An sf object of the cities
 #' @param idpol A character string identifier of cities
@@ -50,15 +50,16 @@
 #' @importFrom flows prepflows domflows firstflows
 #' @importFrom sf st_centroid st_geometry
 
+
 nystuen_dacey <- function(tabflows, idori, iddes, idflow, weight, threspct, pol, idpol, iddist){
-  # weight choices between "destination", "origin", "internal"
+  # weight choices between "destination", "origin", "sum"
   mat <- prepflows(tabflows, idori, iddes, idflow)
   if(weight=="destination"){
     w <- colSums(mat)
   } else if (weight=="origin"){
     w <- rowSums(mat)
-  } else if (weight=="internal"){
-    w <- diag(mat)
+  } else if (weight=="sum"){
+    w <- colSums(mat)+rowSums(mat)
   }
   diag(mat) <- 0
   firstflows <- firstflows(mat = mat, method = "nfirst", k = threspct)

@@ -40,8 +40,9 @@ pop_tab <- function(tabflows, idori, iddes, idflow, iddist){
   poptab <- merge(x = poptab, y = tabflowDes, by.x = "ORI", by.y ="DES", all.x = TRUE, all.y = TRUE)
   poptab <- merge(x = poptab, y = tabflowDistOri, by.x = "ORI", by.y ="ORI", all.x = TRUE, all.y = TRUE)
   poptab <- merge(x = poptab, y = tabflowDistDes, by.x = "ORI", by.y ="DES", all.x = TRUE, all.y = TRUE)
+  poptab$TOTORIDES <- poptab$TOTORI + poptab$TOTDES
   poptab[is.na(poptab)] <- 0
   poptab[["DES"]] <- NULL
-  colnames(poptab) <- c("idflow", "TOTINTRA","TOTORI", "TOTDES","MEANDISTORI","MEANDISTDES")
+  colnames(poptab) <- c("idflow", "TOTINTRA","TOTORI", "TOTDES","MEANDISTORI","MEANDISTDES","TOTORIDES")
   return(poptab)
 }

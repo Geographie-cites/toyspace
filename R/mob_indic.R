@@ -49,8 +49,6 @@ mob_indic <- function (tabflows, idori, iddes, idflow, iddist, pol, idpol){
   popTab$Contention <- (popTab$TOTINTRA / (popTab$TOTORI + popTab$TOTINTRA))*100
   #auto-sufficiency
   popTab$AutoSuff <- (popTab$TOTINTRA / (popTab$TOTDES + popTab$TOTINTRA))*100
-  #Mobility
-  popTab$Mobility <- (popTab$TOTDES+popTab$TOTORI) / (popTab$TOTORI + popTab$TOTINTRA)
   #Relative Balance
   popTab$RelBal <- (popTab$TOTDES-popTab$TOTORI) / (popTab$TOTORI + popTab$TOTDES)
   #Percentage of total flows at origin

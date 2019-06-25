@@ -4,8 +4,8 @@
 \alias{create_tabflows}
 \title{Create an O/D long table}
 \usage{
-create_tabflows(tabindiv, idori, iddes, varwgt = NULL, variable = NULL,
-  label = NULL)
+create_tabflows(tabindiv, idori, iddes, idmode, idcsp, varwgt = NULL,
+  variable = NULL, label = NULL)
 }
 \arguments{
 \item{tabindiv}{A data.frame of individuals between origins and destinations (long format matrix containing, at least, origins, destinations for each individuals)}
@@ -13,6 +13,8 @@ create_tabflows(tabindiv, idori, iddes, varwgt = NULL, variable = NULL,
 \item{idori}{A character string giving the origin field name in tabindiv}
 
 \item{iddes}{A character string giving the destination field name in tabindiv}
+
+\item{idmode}{A character string giving the transport mode field name in tabindiv}
 
 \item{varwgt}{Default to NULL ; a character string giving the weight field name in tabindiv}
 
@@ -32,15 +34,17 @@ It may deal with weighted individuals and filter these individuals
 data(tabindiv)
 idori <- "ORI"
 iddes <- "DES"
+idmode <- "MODE"
+idcsp <-"SCP"
 
-tabflows <- create_tabflows(tabindiv, idori, iddes)
+tabflows <- create_tabflows(tabindiv, idori, iddes, idmode, idcsp)
 
 tabflows[1:10,]
 
 # we will now weight individuals with the column "WGT"
 varwgt <- "WGT"
 
-tabflows <- create_tabflows(tabindiv, idori, iddes, varwgt)
+tabflows <- create_tabflows(tabindiv, idori, iddes, idmode, idcsp, varwgt)
 
 tabflows[1:10,]
 
@@ -48,7 +52,7 @@ tabflows[1:10,]
 variable <- "SCP"
 label <- "3"
 
-tabflowsW <- create_tabflows(tabindiv, idori, iddes, varwgt, variable, label)
+tabflowsW <- create_tabflows(tabindiv, idori, iddes, idmode, idcsp, varwgt, variable, label)
 
 tabflowsW[1:10,]
 

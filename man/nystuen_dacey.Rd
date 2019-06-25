@@ -16,7 +16,7 @@ nystuen_dacey(tabflows, idori, iddes, idflow, weight, threspct, pol, idpol,
 
 \item{idflow}{A character string giving the flow field name in tabflows}
 
-\item{weight}{A character string, chosen between, "destination", "origin" or "internal" to weigths the flows}
+\item{weight}{A character string, chosen between, "destination", "origin" or "sum" to weigths the flows}
 
 \item{threspct}{A threshold (see 'Details')}
 
