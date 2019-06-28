@@ -51,6 +51,8 @@ mob_indic <- function (tabflows, idori, iddes, idflow, iddist, pol, idpol){
   popTab$AutoSuff <- (popTab$TOTINTRA / (popTab$TOTDES + popTab$TOTINTRA))*100
   #Relative Balance
   popTab$RelBal <- (popTab$TOTDES-popTab$TOTORI) / (popTab$TOTORI + popTab$TOTDES)
+  #Difference
+  popTab$Difference <- popTab$TOTDES-popTab$TOTORI
   #Percentage of total flows at origin
   popTab$perOri <- (popTab$TOTORI*100)/sum(popTab$TOTORI)
   #Percentage of total flows at destination
