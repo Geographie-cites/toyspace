@@ -16,7 +16,7 @@
 
 
 cost_matrix <- function(tabcost, idpol, idori, iddes, iddist){
-  tabCost <- tabflows[, c(idori, iddes, iddist)]
+  tabCost <- tabcost[, c(idori, iddes, iddist)]
   tabIndex <- expand.grid(ORI = idpol,
                           DES = idpol,
                           stringsAsFactors = FALSE)
@@ -25,7 +25,7 @@ cost_matrix <- function(tabcost, idpol, idori, iddes, iddist){
   colnames(tabCost)[1:3] <- c("ORI", "DES", "DIST")
   tabCost$KEY <- paste(tabCost$ORI, tabCost$DES, sep = "_")
 
-  tabIndex <- merge(x = tabIndex, y = tabflows[, c("KEY", "DIST")], by = "KEY", all.x = TRUE)
+  tabIndex <- merge(x = tabIndex, y = tabcost[, c("KEY", "DIST")], by = "KEY", all.x = TRUE)
   colnames(tabIndex)[1:3] <- c("ORI", "DES", "DIST")
   tabWide <- dcast(tabIndex, formula = ORI ~ DES, value.var = "DIST", fill = 0, drop = FALSE)
   matCost <- as.matrix(tabWide[, -1])

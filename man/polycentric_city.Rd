@@ -4,7 +4,7 @@
 \alias{polycentric_city}
 \title{DF transform to polycentric urban model}
 \usage{
-polycentric_city(pol, idpol, cand, tabflows, iddes, idflow)
+polycentric_city(pol, idpol, cand, tabflows, idori, iddes, idflow)
 }
 \arguments{
 \item{pol}{An sf object of the cities}
@@ -14,6 +14,8 @@ polycentric_city(pol, idpol, cand, tabflows, iddes, idflow)
 \item{cand}{A character string of the column containing binary (1, 0) candidate value of the pol object (1 must be equal to city considered as employment pole and containing a railroad station)}
 
 \item{tabflows}{A data.frame of flows between origins and destinations (long format matrix containing, at least, origins, destinations, flows)}
+
+\item{idori}{A char}
 
 \item{iddes}{A character string giving the destination field name in tabflows}
 

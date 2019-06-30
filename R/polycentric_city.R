@@ -9,6 +9,7 @@
 #' @param idpol A character string of the column containing the id of the pol object
 #' @param cand A character string of the column containing binary (1, 0) candidate value of the pol object (1 must be equal to city considered as employment pole and containing a railroad station)
 #' @param tabflows A data.frame of flows between origins and destinations (long format matrix containing, at least, origins, destinations, flows)
+#' @param idori A char
 #' @param iddes A character string giving the destination field name in tabflows
 #' @param idflow A character string giving the flow field name in tabflows
 #'
@@ -39,7 +40,7 @@
 #' @export
 #' @importFrom sf st_centroid st_crs st_distance
 
-polycentric_city <- function(pol, idpol, cand, tabflows, iddes, idflow){
+polycentric_city <- function(pol, idpol, cand, tabflows, idori, iddes, idflow){
   tabflows$DES <- tabflows[[iddes]]
   tabflows$FLOW <- tabflows[[idflow]]
   dictionary <- relocate_one(pol = pol, idpol = idpol, cand = cand)

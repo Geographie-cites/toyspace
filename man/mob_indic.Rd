@@ -4,10 +4,12 @@
 \alias{mob_indic}
 \title{Shape mobility indicators}
 \usage{
-mob_indic(tabflows, idori, iddes, idflow, iddist, pol, idpol)
+mob_indic(tabflows, tabdist, idori, iddes, idflow, iddist, pol, idpol)
 }
 \arguments{
 \item{tabflows}{A data.frame of flows between origins and destinations (long format matrix containing, at least, 3 column : origins, destinations, flows)}
+
+\item{tabdist}{An sf object of the cities}
 
 \item{idori}{A character string giving the origin field name in tabflows}
 

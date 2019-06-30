@@ -9,7 +9,7 @@
 #' so that every jobs are in the main city, and workers in the suburbs.
 #'
 #' @param pol An sf object of the cities
-#' @param id A character string of the column containing the id of the pol object
+#' @param idpol A character string of the column containing the id of the pol object
 #' @param cand A character string of the column containing binary (1, 0) candidate value of the pol object (main city must be equal to 1 and 0 for the rest)
 #' @param tabflows A data.frame of flows between origins and destinations (long format matrix containing, at least, origins, destinations, flows)
 #' @param idori A character string giving the origin field name in tabflows
@@ -23,12 +23,12 @@
 #' @importFrom sf st_set_geometry
 
 
-cbd_city <- function(pol, id, cand, tabflows, idori, iddes, idflow){
+cbd_city <- function(pol, idpol, cand, tabflows, idori, iddes, idflow){
   tabflows$ORI <- tabflows[[idori]]
   tabflows$DES <- tabflows[[iddes]]
   tabflows$FLOW <- tabflows[[idflow]]
   pol <- pol %>% st_set_geometry(NULL)
-  pol$ID <- pol[[id]]
+  pol$ID <- pol[[idpol]]
   pol$CAND <- pol[[cand]]
 
   # compute proportion of jobs and proportion of labor force

@@ -3,10 +3,10 @@
 #' This function allows you to create a distance cost matrix
 #'
 #' @param tabflows A long table of flows
-#' @param matcost A squared matrix of cost
-#' @param idspat A squared matrix of cost
-#' @param varori A squared matrix of cost
-#' @param vardes A squared matrix of cost
+#' @param tabcost A squared matrix of cost
+#' @param idpol A squared matrix of cost
+#' @param idori A squared matrix of cost
+#' @param iddes A squared matrix of cost
 #' @param variable A squared matrix of cost
 #' @param modal A squared matrix of cost
 #'
@@ -22,8 +22,8 @@
 # Bind partial minimal matrices ----
 
 bind_excess <- function(tabflows, tabcost, idpol, idori, iddes, idflow, iddist, variable, modal){
-  matToFill <- matrix(data = rep(0, times = length(matcost)), nrow = nrow(matcost), ncol = ncol(matcost))
   matCost <- cost_matrix(tabcost = tabcost, idpol = idpol, idori = idori, iddes = iddes, iddist = iddist)
+  matToFill <- matrix(data = rep(0, times = length(matCost)), nrow = nrow(matCost), ncol = ncol(matCost))
   for(i in 1:length(modal)){
     tempFlows <- tabflows[tabflows[[variable]] == modal[[i]], ]
     matFlowsPart <- cast_tabflows(idpol = idpol,
@@ -31,7 +31,7 @@ bind_excess <- function(tabflows, tabcost, idpol, idori, iddes, idflow, iddist, 
                                   idori = idori,
                                   iddes = iddes,
                                   idflow = idflow)
-    matFlowsPartMin <- excess_commuting(matflows = matFlowsPart, matcost = matcost)
+    matFlowsPartMin <- excess_commuting(matflows = matFlowsPart, matcost = matCost)
     matToFill <- matToFill + matFlowsPartMin
   }
   row.names(matToFill) <- colnames(matToFill) <- colnames(matFlowsPartMin)

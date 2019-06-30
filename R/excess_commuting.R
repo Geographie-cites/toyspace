@@ -10,7 +10,6 @@
 #'
 #'
 #' @export
-#' @importFrom transport transport
 #' @importFrom reshape2 dcast
 
 excess_commuting <- function(matflows, matcost){
@@ -20,7 +19,7 @@ excess_commuting <- function(matflows, matcost){
     stop("Check the matrix size (square matrices of equal size are required)")
   }
 
-  lpResult <- transport(a = apply(matflows, 1, sum), b = apply(matflows, 2, sum), costm = matcost)
+  lpResult <- transport::transport(a = apply(matflows, 1, sum), b = apply(matflows, 2, sum), costm = matcost)
 
   lpResult$from <- factor(x = lpResult$from, levels = 1:nrow(matflows), labels = 1:nrow(matflows))
   lpResult$to <- factor(x = lpResult$to, levels = 1:nrow(matflows), labels = 1:nrow(matflows))

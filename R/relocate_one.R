@@ -26,15 +26,20 @@
 #' @importFrom sf st_centroid st_crs st_distance
 
 relocate_one <- function(pol, idpol, cand){
-  if(st_crs(pol)[[1]] != 2154) stop("Check the CRS (2154) and read the fucking manual")
+if(st_crs(pol)[[1]] != 2154) stop("Check the CRS (2154) and read the fucking manual")
   pol$ID <- pol[[idpol]]
   pol$KEY <- pol[[cand]]
   centroPol <- st_centroid(pol)
   oriRelocate <- centroPol
   desRelocate <- centroPol[centroPol$KEY == 1,]
-  matDist <- st_distance(oriRelocate, desRelocate)
+  unitDist <- st_distance(oriRelocate, desRelocate) %>% as.numeric()
+  matDist <- matrix(unitDist, nrow = nrow(oriRelocate), ncol = nrow(desRelocate))
+  row.names(matDist) <- oriRelocate[[idpol]]
+  colnames(matDist) <- desRelocate[[idpol]]
   idMin <- apply(matDist, 1, which.min)
-  dictioTransfer <- data.frame("OLD" = pol$ID, "NEW" = pol$ID[idMin])
+  dictioTransfer <- data.frame("OLD" = names(idMin),
+                               "NEW" = desRelocate[[idpol]][idMin],
+                               stringsAsFactors = FALSE)
   return(dictioTransfer)
 }
 

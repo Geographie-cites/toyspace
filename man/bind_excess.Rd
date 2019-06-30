@@ -10,17 +10,17 @@ bind_excess(tabflows, tabcost, idpol, idori, iddes, idflow, iddist,
 \arguments{
 \item{tabflows}{A long table of flows}
 
+\item{tabcost}{A squared matrix of cost}
+
+\item{idpol}{A squared matrix of cost}
+
+\item{idori}{A squared matrix of cost}
+
+\item{iddes}{A squared matrix of cost}
+
 \item{variable}{A squared matrix of cost}
 
 \item{modal}{A squared matrix of cost}
-
-\item{matcost}{A squared matrix of cost}
-
-\item{idspat}{A squared matrix of cost}
-
-\item{varori}{A squared matrix of cost}
-
-\item{vardes}{A squared matrix of cost}
 }
 \value{
 A squared matrix of flows

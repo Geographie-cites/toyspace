@@ -4,12 +4,12 @@
 \alias{cbd_city}
 \title{DF transform to CBD urban model}
 \usage{
-cbd_city(pol, id, cand, tabflows, idori, iddes, idflow)
+cbd_city(pol, idpol, cand, tabflows, idori, iddes, idflow)
 }
 \arguments{
 \item{pol}{An sf object of the cities}
 
-\item{id}{A character string of the column containing the id of the pol object}
+\item{idpol}{A character string of the column containing the id of the pol object}
 
 \item{cand}{A character string of the column containing binary (1, 0) candidate value of the pol object (main city must be equal to 1 and 0 for the rest)}
 
