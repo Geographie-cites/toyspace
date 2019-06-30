@@ -51,6 +51,5 @@ finger_plan <- function(pol, idpol, cand, tabflows, idori, iddes, idflow){
   dictionary <- relocate_one(pol = pol, idpol = idpol, cand = cand)
   tabflows$ORI <- map_values(x = tabflows$ORI, from = dictionary$OLD, to = dictionary$NEW, warn_missing = FALSE)
   tabflows$DES <- map_values(x = tabflows$DES, from = dictionary$OLD, to = dictionary$NEW, warn_missing = FALSE)
-  tabFlows <- tabflows[,c("ORI","DES","FLOW")]
   return(tabFlows)
 }

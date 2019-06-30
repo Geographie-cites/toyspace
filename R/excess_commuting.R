@@ -18,13 +18,15 @@ excess_commuting <- function(matflows, matcost){
   } else {
     stop("Check the matrix size (square matrices of equal size are required)")
   }
-
+  matflows[is.na(matflows)] <- 0
+  matflows <- round(matflows)
   lpResult <- transport::transport(a = apply(matflows, 1, sum), b = apply(matflows, 2, sum), costm = matcost)
 
   lpResult$from <- factor(x = lpResult$from, levels = 1:nrow(matflows), labels = 1:nrow(matflows))
   lpResult$to <- factor(x = lpResult$to, levels = 1:nrow(matflows), labels = 1:nrow(matflows))
   lpWide <- dcast(data = lpResult, formula = from ~ to, fill = 0, drop = FALSE, value.var = "mass")
   matMin <- as.matrix(lpWide[, -1])
+  row.names(matMin) <- colnames(matMin) <- row.names(matflows)
 
   return(matMin)
 }

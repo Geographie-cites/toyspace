@@ -22,7 +22,6 @@
 #' @importFrom dplyr group_by filter summarise %>% left_join mutate ungroup transmute
 #' @importFrom sf st_set_geometry
 
-
 cbd_city <- function(pol, idpol, cand, tabflows, idori, iddes, idflow){
   tabflows$ORI <- tabflows[[idori]]
   tabflows$DES <- tabflows[[iddes]]
@@ -53,18 +52,18 @@ cbd_city <- function(pol, idpol, cand, tabflows, idori, iddes, idflow){
     left_join(pol[, c("ID", "CAND")], by = c("DES" = "ID")) %>%
     filter(CAND != 1)
   matPctIn <- sapply(tabFlowsSub$FLOW, function(x) x * totDesIn$PCTFLOW) %>% t()
-  row.names(matPctIn) <- paste(tabFlowsSub$ORI, tabFlowsSub$MODE, sep = "_")
+  row.names(matPctIn) <- paste(tabFlowsSub$ORI, tabFlowsSub$CSP, sep = "_")
   colnames(matPctIn) <- totDesIn$DES
-  tabFlowsIn <- melt(matPctIn, varnames = c("ORIMODE", "DES"), value.name = "FLOW", as.is = TRUE) %>%
-    mutate(ORI = substr(ORIMODE, 1, 5), MODE = substr(ORIMODE, 7, 8)) %>%
-    group_by(ORI, DES, MODE) %>%
+  tabFlowsIn <- melt(matPctIn, varnames = c("ORICSP", "DES"), value.name = "FLOW", as.is = TRUE) %>%
+    mutate(ORI = substr(ORICSP, 1, 5), CSP = substr(ORICSP, 7, 7)) %>%
+    group_by(ORI, DES, CSP) %>%
     summarise(FLOW = sum(FLOW)) %>%
     ungroup()
 
   tabFlowsCand <- tabflows %>%
     left_join(pol[, c("ID", "CAND")], by = c("DES" = "ID")) %>%
     filter(CAND == 1) %>%
-    transmute(ORI = ORI, DES = DES, MODE = substr(MODE, 1, 2), FLOW = FLOW)
+    transmute(ORI = ORI, DES = DES, CSP = CSP, FLOW = FLOW)
 
   jobsRelocated <- rbind(tabFlowsIn, tabFlowsCand)
 
@@ -74,18 +73,18 @@ cbd_city <- function(pol, idpol, cand, tabflows, idori, iddes, idflow){
     filter(CAND == 1)
   matPctOut <- sapply(tabFlowsCbd$FLOW, function(x) x * totOriOut$PCTFLOW) %>% t()
 
-  row.names(matPctOut) <- paste(tabFlowsCbd$DES, tabFlowsCbd$MODE, sep = "_")
+  row.names(matPctOut) <- paste(tabFlowsCbd$DES, tabFlowsCbd$CSP, sep = "_")
   colnames(matPctOut) <- totOriOut$ORI
-  tabFlowsOut <- melt(matPctOut, varnames = c("DESMODE", "ORI"), value.name = "FLOW", as.is = TRUE) %>%
-    mutate(DES = substr(DESMODE, 1, 5), MODE = substr(DESMODE, 7, 8)) %>%
-    group_by(ORI, DES, MODE) %>%
+  tabFlowsOut <- melt(matPctOut, varnames = c("DESCSP", "ORI"), value.name = "FLOW", as.is = TRUE) %>%
+    mutate(DES = substr(DESCSP, 1, 5), CSP = substr(DESCSP, 7, 8)) %>%
+    group_by(ORI, DES, CSP) %>%
     summarise(FLOW = sum(FLOW)) %>%
     ungroup()
 
   tabFlowsNocbd <- jobsRelocated %>%
     left_join(pol[, c("ID", "CAND")], by = c("ORI" = "ID")) %>%
     filter(CAND != 1) %>%
-    transmute(ORI = ORI, DES = DES, MODE = substr(MODE, 1, 2), FLOW = FLOW)
+    transmute(ORI = ORI, DES = DES, CSP = CSP, FLOW = FLOW)
 
   allRelocated <- rbind(tabFlowsOut, tabFlowsNocbd)
 

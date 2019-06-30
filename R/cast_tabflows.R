@@ -26,7 +26,6 @@ cast_tabflows <- function(idpol, tabflows, idori, iddes, idflow){
   tabflows$KEY <- paste(tabflows$ORI, tabflows$DES, sep = "_")
 
   tabIndex <- merge(x = tabIndex, y = tabflows[, c("KEY", "FLOW")], by = "KEY", all.x = TRUE)
-  colnames(tabIndex)[1:3] <- c("ORI", "DES", "FLOW")
   infoFlowsWide <- dcast(tabIndex, formula = ORI ~ DES, value.var = "FLOW", fun.aggregate = sum, fill = 0, drop = FALSE)
   matFlows <- as.matrix(infoFlowsWide[, -1])
   row.names(matFlows) <- colnames(matFlows)

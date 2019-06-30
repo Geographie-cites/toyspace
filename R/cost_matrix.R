@@ -25,8 +25,7 @@ cost_matrix <- function(tabcost, idpol, idori, iddes, iddist){
   colnames(tabCost)[1:3] <- c("ORI", "DES", "DIST")
   tabCost$KEY <- paste(tabCost$ORI, tabCost$DES, sep = "_")
 
-  tabIndex <- merge(x = tabIndex, y = tabcost[, c("KEY", "DIST")], by = "KEY", all.x = TRUE)
-  colnames(tabIndex)[1:3] <- c("ORI", "DES", "DIST")
+  tabIndex <- merge(x = tabIndex, y = tabCost[, c("KEY", "DIST")], by = "KEY", all.x = TRUE)
   tabWide <- dcast(tabIndex, formula = ORI ~ DES, value.var = "DIST", fill = 0, drop = FALSE)
   matCost <- as.matrix(tabWide[, -1])
   row.names(matCost) <- colnames(matCost)

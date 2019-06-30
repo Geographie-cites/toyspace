@@ -21,9 +21,8 @@
 
 # Bind partial minimal matrices ----
 
-bind_excess <- function(tabflows, tabcost, idpol, idori, iddes, idflow, iddist, variable, modal){
-  matCost <- cost_matrix(tabcost = tabcost, idpol = idpol, idori = idori, iddes = iddes, iddist = iddist)
-  matToFill <- matrix(data = rep(0, times = length(matCost)), nrow = nrow(matCost), ncol = ncol(matCost))
+bind_excess_job <- function(tabflows, matcost, idpol, idori, iddes, idflow, variable, modal){
+  tabToFill <- data.frame(ORI = vector(), DES = vector(), FLOW = vector(), CSP = vector())
   for(i in 1:length(modal)){
     tempFlows <- tabflows[tabflows[[variable]] == modal[[i]], ]
     matFlowsPart <- cast_tabflows(idpol = idpol,
@@ -31,9 +30,13 @@ bind_excess <- function(tabflows, tabcost, idpol, idori, iddes, idflow, iddist, 
                                   idori = idori,
                                   iddes = iddes,
                                   idflow = idflow)
-    matFlowsPartMin <- excess_commuting(matflows = matFlowsPart, matcost = matCost)
-    matToFill <- matToFill + matFlowsPartMin
+    matFlowsPartMin <- excess_commuting(matflows = matFlowsPart, matcost = matcost)
+    tabFlowsPart <- melt(matFlowsPartMin, as.is = TRUE)
+    colnames(tabFlowsPart) <- c("ORI", "DES", "FLOW")
+    tabFlowsPart$CSP <- modal[[i]]
+    tabToFill <- bind_rows(tabToFill, tabFlowsPart) %>%
+      filter(FLOW > 0)
   }
-  row.names(matToFill) <- colnames(matToFill) <- colnames(matFlowsPartMin)
-  return(matToFill)
+
+  return(tabToFill)
 }
