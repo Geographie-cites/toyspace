@@ -41,18 +41,3 @@ There are 4 mobility indicators :
 \description{
 This function allows you to create an sf object containing mobility indicators in each polygons using a data.frame of flows
 }
-\examples{
-# Import data
-data(tabflows)
-idori <- "ORI"
-iddes <- "DES"
-idflow <- "FLOW"
-iddist <- "DIST"
-data(pol)
-idpol <- "idpol"
-
-polflow <- mob_indic(tabflows, idori, iddes, idflow, iddist, pol, idpol)
-
-polflow[1:10,]
-
-}

@@ -7,7 +7,7 @@
 pop_tab(tabflows, idori, iddes, idflow, iddist)
 }
 \arguments{
-\item{tabflows}{A data.frame of flows between origins and destinations (long format matrix containing, at least, origins, destinations, flows)}
+\item{tabflows}{A data.frame of flows (long format: origin, destination, flow)}
 
 \item{idori}{identifiant ori}
 
@@ -18,10 +18,10 @@ pop_tab(tabflows, idori, iddes, idflow, iddist)
 \item{iddist}{identifiant dist}
 }
 \value{
-A data.frame of totals origins, destinations, internals flows and mean of distance for origins and destination of each city
+A data.frame of totals origins, destinations, internals flows and sum of distance for origins and destination of each city
 }
 \description{
-This function allows you to store the totals of origins, destinations and intrenals flows for each city in a dataframe,
+This function computes the margins of the OD matrix: emissions, attractions, intraflows for each spatial unit
 from a long format matrix of flows.
 }
 \examples{

@@ -3,6 +3,7 @@
 #' This function selects the flows to be keeped in a large matrix of flows responding to the Nystuen & Dacey's dominants flows criterion.
 #'
 #' @param tabflows A data.frame of flows between origins and destinations (long format matrix containing, at least, 3 column : origins, destinations, flows)
+#' @param poptab A data.frame created by pop_tab()
 #' @param idori A character string giving the origin field name in tabflows
 #' @param iddes A character string giving the destination field name in tabflows
 #' @param idflow A character string giving the flow field name in tabflows
@@ -18,32 +19,6 @@
 #'
 #' @return A boolean matrix of selected flows
 #'
-#' @examples
-#' # Import data
-#' data(tabflows)
-#' idori <- "ORI"
-#' iddes <- "DES"
-#' idflow <- "FLOW"
-#' weight <- "destination"
-#' threspct <- 1
-#' data(pol)
-#' idpol <- "idpol"
-#' iddist <- "DIST"
-#'
-#' domflow <- nystuen_dacey(
-#' tabflows,
-#' idori,
-#' iddes,
-#' idflow,
-#' weight,
-#' threspct,
-#' pol,
-#' idpol,
-#' iddist)
-#'
-#' domflow[1]
-#' domflow[2]
-#'
 #' @export
 #' @importFrom cartography getLinkLayer
 #' @importFrom reshape2 melt
@@ -51,7 +26,12 @@
 #' @importFrom sf st_centroid st_geometry
 
 
-nystuen_dacey <- function(tabflows, idori, iddes, idflow, weight, threspct, pol, idpol, iddist){
+nystuen_dacey <- function(tabflows, poptab, idori, iddes, idflow, weight, threspct, pol, idpol, iddist){
+
+  tabflows$ORI <- tabflows[[idori]]
+  tabflows$DES <- tabflows[[iddes]]
+  tabflows$FLOW <- tabflows[[idflow]]
+
   # weight choices between "destination", "origin", "sum"
   mat <- prepflows(tabflows, idori, iddes, idflow)
   if(weight=="destination"){
@@ -70,13 +50,13 @@ nystuen_dacey <- function(tabflows, idori, iddes, idflow, weight, threspct, pol,
   flowDomWide$KEY <- paste(flowDomWide[["ORI"]], flowDomWide[["DES"]], sep = "_")
   spLinks <- getLinkLayer(x = pol, xid = idpol, df = flowDomWide[, c("ORI", "DES")], dfid = c("ORI", "DES"))
   spLinks$KEY <- paste(spLinks[["ORI"]], spLinks[["DES"]], sep = "_")
-  spLinks <- merge(spLinks, flowDomWide[, c("KEY", "FLOW")], by.x = "KEY", by.y = "KEY")
+  spLinks <- merge(spLinks, flowDomWide[, c("KEY", "FLOW")], by = "KEY")
   shapesfCent <- st_centroid(pol)
   xy <- do.call(rbind, st_geometry(shapesfCent))
   shapesfCent$lon <- xy[,1]
   shapesfCent$lat <- xy[,2]
-  popTab <- pop_tab(tabflows, idori, iddes, idflow, iddist)
-  pointFlow <- merge(x = shapesfCent, y = popTab, by.x = idpol, by.y = "idflow")
+  shapesfCent$CODGEO <- pol[[idpol]]
+  pointFlow <- merge(x = shapesfCent, y = poptab, by = "CODGEO")
   tabflowOri <- aggregate(x = tabflows[[idflow]], by = list(tabflows[[idori]]), FUN = sum)
   colnames(tabflowOri) <- c("ORI","TOTORI")
   fdom1 <- melt(flowDom)

@@ -33,7 +33,7 @@
 pol_aggregate <- function(before, after, pol, idpol, namepol, nameAgr){
   dicoAgr <- data.frame("OLDCODE" = before, "NEWCODE" = after)
   pol[[idpol]] <- as.character(pol[[idpol]])
-  pol$IDAGR <- mapvalues_(x = pol[[idpol]], from = dicoAgr$OLDCODE, to = dicoAgr$NEWCODE)
+  pol$IDAGR <- map_values(x = pol[[idpol]], from = dicoAgr$OLDCODE, to = dicoAgr$NEWCODE)
   pol$area <- st_area(pol)
   polAgr <- pol %>%
     group_by(pol$IDAGR) %>%

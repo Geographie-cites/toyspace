@@ -27,7 +27,7 @@
 
 city_aggregate <- function(before, after, tabflows, idori, iddes){
   dicoAgr <- data.frame("OLDCODE" = before, "NEWCODE" = after)
-  tabflows$ORIAGR <- mapvalues_(x = tabflows[[idori]], from = dicoAgr$OLDCODE, to = dicoAgr$NEWCODE)
-  tabflows$DESAGR <- mapvalues_(x = tabflows[[iddes]], from = dicoAgr$OLDCODE, to = dicoAgr$NEWCODE)
+  tabflows$ORIAGR <- map_values(x = tabflows[[idori]], from = dicoAgr$OLDCODE, to = dicoAgr$NEWCODE)
+  tabflows$DESAGR <- map_values(x = tabflows[[iddes]], from = dicoAgr$OLDCODE, to = dicoAgr$NEWCODE)
   return(tabflows)
 }

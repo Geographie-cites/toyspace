@@ -1,4 +1,4 @@
-#' Replace specified values with new values, in a vector or factor (from dplyr)
+#' Replace specified values with new values, in a vector or factor (from plyr)
 #'
 #' Item in x that match items from will be replaced by items in to, matched by position. For example, items in x that match the first element in from will be replaced by the first element of to.
 #'
@@ -12,19 +12,19 @@
 #'
 #' @examples
 #' x <- c("a", "b", "c")
-#'mapvalues_(x, c("a", "c"), c("A", "C"))
+#'map_values(x, c("a", "c"), c("A", "C"))
 #'
 #'# Works on factors
 #'y <- factor(c("a", "b", "c", "a"))
-#'mapvalues_(y, c("a", "c"), c("A", "C"))
+#'map_values(y, c("a", "c"), c("A", "C"))
 #'
 #'# Works on numeric vectors
 #'z <- c(1, 4, 5, 9)
-#'mapvalues_(z, from = c(1, 5, 9), to = c(10, 50, 90))
+#'map_values(z, from = c(1, 5, 9), to = c(10, 50, 90))
 #'
 #' @export
 
-mapvalues_ <- function (x, from, to, warn_missing = TRUE)
+map_values <- function (x, from, to, warn_missing = TRUE)
 {
   if (length(from) != length(to)) {
     stop("`from` and `to` vectors are not the same length.")
@@ -33,7 +33,7 @@ mapvalues_ <- function (x, from, to, warn_missing = TRUE)
     stop("`x` must be an atomic vector.")
   }
   if (is.factor(x)) {
-    levels(x) <- mapvalues_(levels(x), from, to, warn_missing)
+    levels(x) <- map_values(levels(x), from, to, warn_missing)
     return(x)
   }
   mapidx <- match(x, from)

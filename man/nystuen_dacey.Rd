@@ -4,11 +4,13 @@
 \alias{nystuen_dacey}
 \title{Dominant flows}
 \usage{
-nystuen_dacey(tabflows, idori, iddes, idflow, weight, threspct, pol, idpol,
-  iddist)
+nystuen_dacey(tabflows, poptab, idori, iddes, idflow, weight, threspct,
+  pol, idpol, iddist)
 }
 \arguments{
 \item{tabflows}{A data.frame of flows between origins and destinations (long format matrix containing, at least, 3 column : origins, destinations, flows)}
+
+\item{poptab}{A data.frame created by pop_tab()}
 
 \item{idori}{A character string giving the origin field name in tabflows}
 
@@ -35,31 +37,4 @@ A boolean matrix of selected flows
 }
 \description{
 This function selects the flows to be keeped in a large matrix of flows responding to the Nystuen & Dacey's dominants flows criterion.
-}
-\examples{
-# Import data
-data(tabflows)
-idori <- "ORI"
-iddes <- "DES"
-idflow <- "FLOW"
-weight <- "destination"
-threspct <- 1
-data(pol)
-idpol <- "idpol"
-iddist <- "DIST"
-
-domflow <- nystuen_dacey(
-tabflows,
-idori,
-iddes,
-idflow,
-weight,
-threspct,
-pol,
-idpol,
-iddist)
-
-domflow[1]
-domflow[2]
-
 }

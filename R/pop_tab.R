@@ -1,14 +1,14 @@
 #' Total flows of a DF
 #'
-#' This function allows you to store the totals of origins, destinations and intrenals flows for each city in a dataframe,
+#' This function computes the margins of the OD matrix: emissions, attractions, intraflows for each spatial unit
 #' from a long format matrix of flows.
 #'
-#' @param tabflows A data.frame of flows between origins and destinations (long format matrix containing, at least, origins, destinations, flows)
+#' @param tabflows A data.frame of flows (long format: origin, destination, flow)
 #' @param idori identifiant ori
 #' @param iddes identifiant des
 #' @param idflow identifiant flux
 #' @param iddist identifiant dist
-#' @return A data.frame of totals origins, destinations, internals flows and mean of distance for origins and destination of each city
+#' @return A data.frame of totals origins, destinations, internals flows and sum of distance for origins and destination of each city
 #'
 #' @examples
 #' data(tabflows)
@@ -32,10 +32,10 @@ pop_tab <- function(tabflows, idori, iddes, idflow, iddist){
   tabflowDes <- tabflows[tabflows[idori] != tabflows[iddes], ]
   tabflowDes <- aggregate(x = tabflowDes[[idflow]], by = list(tabflowDes[[iddes]]), FUN = sum)
   colnames(tabflowDes) <- c("DES","TOTDES")
-  tabflowDistOri <- aggregate(x = tabflows$DIST , by = list(tabflows[[idori]]), FUN = sum)
-  colnames(tabflowDistOri) <- c("ORI","MEANDISTORI")
-  tabflowDistDes <- aggregate(x = tabflows$DIST , by = list(tabflows[[iddes]]), FUN = sum)
-  colnames(tabflowDistDes) <- c("DES","MEANDISTDES")
+  tabflowDistOri <- aggregate(x = tabflows[[iddist]] , by = list(tabflows[[idori]]), FUN = sum)
+  colnames(tabflowDistOri) <- c("ORI","DISTORI")
+  tabflowDistDes <- aggregate(x = tabflows[[iddist]], by = list(tabflows[[iddes]]), FUN = sum)
+  colnames(tabflowDistDes) <- c("DES","DISTDES")
   poptab <- merge(x = tabflowIntra, y = tabflowOri, by.x = "ORI", by.y ="ORI", all.x = TRUE, all.y = TRUE)
   poptab <- merge(x = poptab, y = tabflowDes, by.x = "ORI", by.y ="DES", all.x = TRUE, all.y = TRUE)
   poptab <- merge(x = poptab, y = tabflowDistOri, by.x = "ORI", by.y ="ORI", all.x = TRUE, all.y = TRUE)
@@ -43,6 +43,6 @@ pop_tab <- function(tabflows, idori, iddes, idflow, iddist){
   poptab$TOTORIDES <- poptab$TOTORI + poptab$TOTDES
   poptab[is.na(poptab)] <- 0
   poptab[["DES"]] <- NULL
-  colnames(poptab) <- c("idflow", "TOTINTRA","TOTORI", "TOTDES","MEANDISTORI","MEANDISTDES","TOTORIDES")
+  colnames(poptab) <- c("CODGEO", "TOTINTRA","TOTORI", "TOTDES","DISTORI","DISTDES","TOTORIDES")
   return(poptab)
 }

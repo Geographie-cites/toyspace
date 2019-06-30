@@ -2,11 +2,13 @@
 % Please edit documentation in R/cast_tabflows.R
 \name{cast_tabflows}
 \alias{cast_tabflows}
-\title{Create an O/D square matrix}
+\title{Create an OD square matrix}
 \usage{
-cast_tabflows(tabflows, idori, iddes, idflow)
+cast_tabflows(idpol, tabflows, idori, iddes, idflow)
 }
 \arguments{
+\item{idpol}{A character vector with id values for the spatial units}
+
 \item{tabflows}{A data.frame of flows between origins and destinations (long format matrix containing, at least, 3 column : origins, destinations, flows)}
 
 \item{idori}{A character string giving the origin field name in tabflows}
@@ -20,17 +22,4 @@ A squared Origins (rows) and Destination (columns) matrix of flows
 }
 \description{
 This function allows you to create an Origin/Destination squared matrix from a Origin/Destination long format matrix
-}
-\examples{
-# Import data
-data(tabflows)
-idori <- "ORI"
-iddes <- "DES"
-idflow <- "FLOW"
-
-
-matFlows <- cast_tabflows(tabflows,idori,iddes,idflow)
-
-matFlows[1:10,1:10]
-
 }

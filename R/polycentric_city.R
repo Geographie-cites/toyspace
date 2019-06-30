@@ -43,7 +43,7 @@ polycentric_city <- function(pol, idpol, cand, tabflows, iddes, idflow){
   tabflows$DES <- tabflows[[iddes]]
   tabflows$FLOW <- tabflows[[idflow]]
   dictionary <- relocate_one(pol = pol, idpol = idpol, cand = cand)
-  tabflows$DES <- mapvalues_(x = tabflows$DES, from = dictionary$OLD, to = dictionary$NEW, warn_missing = FALSE)
+  tabflows$DES <- map_values(x = tabflows$DES, from = dictionary$OLD, to = dictionary$NEW, warn_missing = FALSE)
   tabFlows <- tabflows[,c("ORI","DES","FLOW")]
   return(tabFlows)
 }
