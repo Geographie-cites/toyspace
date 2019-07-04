@@ -4,6 +4,7 @@
 #' from a long format matrix of flows.
 #'
 #' @param tabflows A data.frame of flows (long format: origin, destination, flow)
+#' @param tabdist
 #' @param idori identifiant ori
 #' @param iddes identifiant des
 #' @param idflow identifiant flux
@@ -22,7 +23,12 @@
 #' @importFrom stats aggregate
 
 
-pop_tab <- function(tabflows, idori, iddes, idflow, iddist){
+pop_tab <- function(tabflows, tabdist, idori, iddes, idflow, iddist){
+
+  tabflows$KEY <- paste(tabflows[[idori]], tabflows[[iddes]], sep = "_")
+  tabdist$KEY <- paste(tabdist[[idori]], tabdist[[iddes]], sep = "_")
+  tabflows <- merge(tabflows, tabdist[, c(iddist, "KEY")], by = "KEY", all.x = TRUE)
+
   tabflowIntra <- tabflows[tabflows[idori] == tabflows[iddes], ]
   if(nrow(tabflowIntra) == 0){
     tabflowIntra <- data.frame(ORI = NA, TOTINTRA = NA)

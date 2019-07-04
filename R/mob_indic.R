@@ -3,13 +3,12 @@
 #' This function allows you to create an sf object containing mobility indicators in each polygons using a data.frame of flows
 #'
 #' @param tabflows A data.frame of flows between origins and destinations (long format matrix containing, at least, 3 column : origins, destinations, flows)
-#' @param tabdist An sf object of the cities
 #' @param pol An sf object of the cities
 #' @param idpol A character string identifier of cities
 #' @param idori A character string giving the origin field name in tabflows
 #' @param iddes A character string giving the destination field name in tabflows
 #' @param idflow A character string giving the flow field name in tabflows
-#' @param iddist A character string giving the distance field name in tabflows
+#' @param poptab
 #'
 #' @return An sf object of the cities with mobility indicators for each polygons
 #'
@@ -30,42 +29,37 @@
 #'
 #' @export
 
-mob_indic <- function (tabflows, tabdist, idori, iddes, idflow, iddist, pol, idpol){
-  tabflows$KEY <- paste(tabflows[[idori]], tabflows[[iddes]], sep = "_")
-  tabdist$KEY <- paste(tabdist[[idori]], tabdist[[iddes]], sep = "_")
-  tabFlows <- merge(tabflows, tabdist[, c(iddist, "KEY")], by = "KEY", all.x = TRUE)
-
-  popTab <- pop_tab(tabflows = tabFlows, idori = idori, iddes = iddes, idflow = idflow, iddist = iddist)
+mob_indic <- function (tabflows, idori, iddes, idflow, pol, idpol, poptab){
 
   # auto-contention
-  popTab$Contention <- (popTab$TOTINTRA / (popTab$TOTORI + popTab$TOTINTRA))*100
-  popTab$Contention <- ifelse(is.na(popTab$Contention), 0, popTab$Contention)
+  poptab$Contention <- (poptab$TOTINTRA / (poptab$TOTORI + poptab$TOTINTRA))*100
+  poptab$Contention <- ifelse(is.na(poptab$Contention), 0, poptab$Contention)
 
   # auto-sufficiency
-  popTab$AutoSuff <- (popTab$TOTINTRA / (popTab$TOTDES + popTab$TOTINTRA))*100
-  popTab$AutoSuff <- ifelse(is.na(popTab$AutoSuff), 0, popTab$AutoSuff)
+  poptab$AutoSuff <- (poptab$TOTINTRA / (poptab$TOTDES + poptab$TOTINTRA))*100
+  poptab$AutoSuff <- ifelse(is.na(poptab$AutoSuff), 0, poptab$AutoSuff)
 
   # Relative Balance
-  popTab$RelBal <- (popTab$TOTDES - popTab$TOTORI) / (popTab$TOTORI + popTab$TOTDES)
-  popTab$RelBal <- ifelse(is.na(popTab$RelBal), 0, popTab$RelBal)
+  poptab$RelBal <- (poptab$TOTDES - poptab$TOTORI) / (poptab$TOTORI + poptab$TOTDES)
+  poptab$RelBal <- ifelse(is.na(poptab$RelBal), 0, poptab$RelBal)
 
   # Difference
-  popTab$Difference <- popTab$TOTDES - popTab$TOTORI
-  popTab$Difference <- ifelse(is.na(popTab$Difference), 0, popTab$Difference)
+  poptab$Difference <- poptab$TOTDES - poptab$TOTORI
+  poptab$Difference <- ifelse(is.na(poptab$Difference), 0, poptab$Difference)
 
   # Percentage of total flows at origin
-  popTab$PerOri <- (popTab$TOTORI*100) / sum(popTab$TOTORI)
-  popTab$PerOri <- ifelse(is.na(popTab$PerOri), 0, popTab$PerOri)
+  poptab$PerOri <- (poptab$TOTORI*100) / sum(poptab$TOTORI)
+  poptab$PerOri <- ifelse(is.na(poptab$PerOri), 0, poptab$PerOri)
 
   # Percentage of total flows at destination
-  popTab$PerDes <- (popTab$TOTDES*100) / sum(popTab$TOTDES)
-  popTab$PerDes <- ifelse(is.na(popTab$PerDes), 0, popTab$PerDes)
+  poptab$PerDes <- (poptab$TOTDES*100) / sum(poptab$TOTDES)
+  poptab$PerDes <- ifelse(is.na(poptab$PerDes), 0, poptab$PerDes)
 
   # Percentage of total internal flows
-  popTab$PerIntra <- (popTab$TOTINTRA*100) / sum(popTab$TOTINTRA)
-  popTab$PerIntra <- ifelse(is.na(popTab$PerIntra), 0, popTab$PerIntra)
+  poptab$PerIntra <- (poptab$TOTINTRA*100) / sum(poptab$TOTINTRA)
+  poptab$PerIntra <- ifelse(is.na(poptab$PerIntra), 0, poptab$PerIntra)
 
-  polTabFull <- merge(x = pol, y = popTab, by.x = idpol, by.y = "CODGEO", all.x = TRUE)
+  polTabFull <- merge(x = pol, y = poptab, by.x = idpol, by.y = "CODGEO", all.x = TRUE)
 
   return(polTabFull)
 }
