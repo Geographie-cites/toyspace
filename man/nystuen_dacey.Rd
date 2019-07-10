@@ -4,13 +4,11 @@
 \alias{nystuen_dacey}
 \title{Dominant flows}
 \usage{
-nystuen_dacey(tabflows, poptab, idori, iddes, idflow, weight, threspct,
-  pol, idpol, iddist)
+nystuen_dacey(tabflows, idori, iddes, idflow, weight, threspct, pol, idpol,
+  centPol, idCentPol, poptab)
 }
 \arguments{
 \item{tabflows}{A data.frame of flows between origins and destinations (long format matrix containing, at least, 3 column : origins, destinations, flows)}
-
-\item{poptab}{A data.frame created by pop_tab()}
 
 \item{idori}{A character string giving the origin field name in tabflows}
 
@@ -24,13 +22,17 @@ nystuen_dacey(tabflows, poptab, idori, iddes, idflow, weight, threspct,
 
 \item{pol}{An sf object of the cities}
 
-\item{idpol}{A character string identifier of cities
+\item{idpol}{A character string identifier of cities}
+
+\item{centPol}{A character string identifier of cities}
+
+\item{idCentPol}{A character string identifier of cities}
+
+\item{poptab}{A character string identifier of cities
 
 This function selects which flow (fij or fji) must be kept. If the ratio weight of destination (wj) / weight of origin (wi)
 is greater than the treshold, then fij is selected and fji is not. This function can perform the second criterion of the Nystuen & Dacey's dominants flows analysis.
 As the output is a boolean matrix, use element-wise multiplication to get flows intensity.}
-
-\item{iddist}{A character string giving the distance field name in tabflows}
 }
 \value{
 A boolean matrix of selected flows

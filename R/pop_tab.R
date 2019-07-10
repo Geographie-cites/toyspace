@@ -4,7 +4,7 @@
 #' from a long format matrix of flows.
 #'
 #' @param tabflows A data.frame of flows (long format: origin, destination, flow)
-#' @param tabdist
+#' @param tabdist asf
 #' @param idori identifiant ori
 #' @param iddes identifiant des
 #' @param idflow identifiant flux
@@ -14,10 +14,6 @@
 #' @examples
 #' data(tabflows)
 #'
-#' popTab <- pop_tab(tabflows = tabflows, idori = "ORI",
-#' iddes = "DES", idflow = "FLOW", iddist = "DIST")
-#'
-#' popTab[10:10,]
 #'
 #' @export
 #' @importFrom stats aggregate

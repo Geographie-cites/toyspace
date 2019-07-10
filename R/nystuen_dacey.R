@@ -10,9 +10,9 @@
 #' @param threspct A threshold (see 'Details')
 #' @param pol An sf object of the cities
 #' @param idpol A character string identifier of cities
-#' @param centPol
-#' @param idCentPol
-#' @param poptab
+#' @param centPol A character string identifier of cities
+#' @param idCentPol A character string identifier of cities
+#' @param poptab A character string identifier of cities
 #'
 #' This function selects which flow (fij or fji) must be kept. If the ratio weight of destination (wj) / weight of origin (wi)
 #' is greater than the treshold, then fij is selected and fji is not. This function can perform the second criterion of the Nystuen & Dacey's dominants flows analysis.

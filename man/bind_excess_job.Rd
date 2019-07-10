@@ -10,17 +10,19 @@ bind_excess_job(tabflows, matcost, idpol, idori, iddes, idflow, variable,
 \arguments{
 \item{tabflows}{A long table of flows}
 
+\item{matcost}{A squared matrix of cost}
+
 \item{idpol}{A squared matrix of cost}
 
 \item{idori}{A squared matrix of cost}
 
 \item{iddes}{A squared matrix of cost}
 
+\item{idflow}{A squared matrix of cost}
+
 \item{variable}{A squared matrix of cost}
 
 \item{modal}{A squared matrix of cost}
-
-\item{tabcost}{A squared matrix of cost}
 }
 \value{
 A squared matrix of flows

@@ -4,10 +4,12 @@
 \alias{pop_tab}
 \title{Total flows of a DF}
 \usage{
-pop_tab(tabflows, idori, iddes, idflow, iddist)
+pop_tab(tabflows, tabdist, idori, iddes, idflow, iddist)
 }
 \arguments{
 \item{tabflows}{A data.frame of flows (long format: origin, destination, flow)}
+
+\item{tabdist}{asf}
 
 \item{idori}{identifiant ori}
 
@@ -27,9 +29,5 @@ from a long format matrix of flows.
 \examples{
 data(tabflows)
 
-popTab <- pop_tab(tabflows = tabflows, idori = "ORI",
-iddes = "DES", idflow = "FLOW", iddist = "DIST")
-
-popTab[10:10,]
 
 }

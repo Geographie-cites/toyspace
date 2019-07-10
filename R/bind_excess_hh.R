@@ -3,10 +3,11 @@
 #' This function allows you to create a distance cost matrix
 #'
 #' @param tabflows A long table of flows
-#' @param tabcost A squared matrix of cost
+#' @param matcost A squared matrix of cost
 #' @param idpol A squared matrix of cost
 #' @param idori A squared matrix of cost
 #' @param iddes A squared matrix of cost
+#' @param idflow A squared matrix of cost
 #' @param variable A squared matrix of cost
 #' @param modal A squared matrix of cost
 #'
